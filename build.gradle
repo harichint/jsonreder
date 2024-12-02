@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '3.3.0'
 	id 'java'
+	id 'idea'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -14,8 +15,12 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter:2.7.12'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.12'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'com.fasterxml.jackson.core:jackson-databind' //donot specify this as it is part of springboot starter-web and dont need version conflicts.
+
+	implementation 'org.projectlombok:lombok:1.18.34'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
