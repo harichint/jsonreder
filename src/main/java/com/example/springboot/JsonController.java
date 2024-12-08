@@ -22,7 +22,6 @@ public class JsonController {
 	public List<Object> loadJsonObject(@RequestBody String jsonValue) throws IOException, JsonProcessingException {
 
 		List<Object> oList = new ArrayList<>();
-		//oList = JsonUtil.deserializeToPojo(jsonValue);
 		JsonStreamingUtil.streamParse(jsonValue);
 		System.out.println(jsonValue);
 		System.out.println("Size of List" + oList.size());
