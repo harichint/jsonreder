@@ -1,5 +1,6 @@
 package com.example.multithreading;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -17,14 +18,16 @@ public class InterruptableLock {
         Thread t1 = new Thread(() -> {
 
             try {
-                lock.lockInterruptibly();
-                System.out.println("Thread 1 obtained Lock");
-                Thread.sleep(5000);
+                if (lock.tryLock(1000, TimeUnit.MILLISECONDS)) {
+                    System.out.println("Thread 1 obtained Lock");
+                    Thread.sleep(5000);
+                }
             } catch (Exception e) {
                 System.out.println("Thread 1 interrupted");
             } finally {
                 if (lock.isHeldByCurrentThread())
                     lock.unlock();
+//                    lock.unlock();//java.lang.IllegalMonitorStateException will be thrown
                 System.out.println("Thread 1 release lock");
             }
         });
@@ -38,7 +41,17 @@ public class InterruptableLock {
                 System.out.println("Thread 2 interrupted");
             }
         });
+        //enable to see how this works
+//        Thread t3 = new Thread(() ->{
+//            try {
+//                t1.interrupt();
+//                System.out.println("Thread 3 interrupted Thread 1");
+//            } catch (Exception e) {
+//                System.out.println("Thread 3 interrupted");
+//            }
+//        });
         t1.start();
         t2.start();
+//        t3.start();
     }
 }
