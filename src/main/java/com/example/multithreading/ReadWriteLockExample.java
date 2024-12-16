@@ -47,23 +47,18 @@ public class ReadWriteLockExample {
 
     public static void main(String[] args) throws InterruptedException {
         ReadWriteLockExample counter = new ReadWriteLockExample();
-        Runnable readTask = new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    System.out.println(Thread.currentThread().getName() + "- Count: "
-                            + counter.getCounter());
-                }
+        //Using Lambda
+        Runnable readTask = () -> {
+            for (int i = 0; i < 10; i++) {
+                System.out.println(Thread.currentThread().getName() + "- Count: "
+                        + counter.getCounter());
             }
         };
-
-        Runnable writeTask = new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    System.out.println(Thread.currentThread().getName() + " : Incremented");
-                    counter.incrementCounter();
-                }
+        //Using Lambda
+        Runnable writeTask = () -> {
+            for (int i = 0; i < 10; i++) {
+                System.out.println(Thread.currentThread().getName() + " : Incremented");
+                counter.incrementCounter();
             }
         };
         Thread readThread1 = new Thread(readTask, "Read Thread1");

@@ -28,11 +28,8 @@ public class FairnessLock {
     }
     public static void main(String [] args) throws InterruptedException {
         FairnessLock fl = new FairnessLock();
-        Runnable task = new Runnable() {
-            @Override
-            public void run() {
+        Runnable task = () -> {
                 fl.getResource();
-            }
         };
         Thread t1 = new Thread(task, "Thread 1");
         Thread t2 = new Thread(task, "Thread 2");

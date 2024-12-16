@@ -47,7 +47,8 @@ public class DeadlockExample {
         }
         @Override
         public void run() {
-//            synchronized (paper) {
+//            synchronized (paper) { / this will make sure to get paper lock before runningpen with paper.
+            //so this will avoid deadlock
                 pen.writeWithPenAndPaper(paper);
 //            }
         }
