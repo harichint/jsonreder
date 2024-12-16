@@ -6,6 +6,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * ReadWriteLock example
+ * as soon as writer locks taken until they are released read locks wont be acquired.
+ * this way the resources are not locked unnecessarily.
+ *
  */
 public class ReadWriteLockExample {
 
@@ -17,11 +20,12 @@ public class ReadWriteLockExample {
     private void incrementCounter() {
         try {
             writeLock.lock();
-            System.out.println("Write Lock Obtained by " + Thread.currentThread().getName());
+            System.out.println("Write Lock Obtained by: " + Thread.currentThread().getName());
             counter++;
             //Enable the below to see the read and write distribute nicely
             //without the below readwrite locks will read as long as write lock is not acquired
-            // once write is completed, then the remaining reads are completed.
+            //once write is completed, then the remaining reads are completed.
+            //but with the below this "may" change which can be like read then write then read then write etc
 
 //            Thread.sleep(50);
 //        } catch (InterruptedException e) {
@@ -47,7 +51,7 @@ public class ReadWriteLockExample {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    System.out.println(Thread.currentThread().getName() +
+                    System.out.println(Thread.currentThread().getName() + "- Count: "
                             + counter.getCounter());
                 }
             }
@@ -62,8 +66,8 @@ public class ReadWriteLockExample {
                 }
             }
         };
-        Thread readThread1 = new Thread(readTask, "Read Thread");
-        Thread readThread2 = new Thread(readTask, "Read Thread");
+        Thread readThread1 = new Thread(readTask, "Read Thread1");
+        Thread readThread2 = new Thread(readTask, "Read Thread2");
         Thread writeThreads = new Thread(writeTask, "Write Thread");
         writeThreads.start();
         readThread1.start();
